@@ -32,42 +32,43 @@
 
 import Foundation
 
+@MainActor
 class QuoteViewModel: ObservableObject {
   @Published var quote = Quote.example
 
-  func getQuotes() {
+  func getQuotes() async throws {
     guard let url = URL(string: Constants.URL.quote) else {
       print("Invalid URL")
       return
     }
-    let request = URLRequest(url: url)
-    URLSession.shared.dataTask(with: request) { data, response, error in
-      guard error == nil else {
-        print("Error getting the data.")
-        return
-      }
 
-      guard let response = response as? HTTPURLResponse,
-            (200...299).contains(response.statusCode) else {
-        print("Invalid response.")
-        return
-      }
-
-      guard let data = data else {
-        print("No data in response.")
-        return
-      }
-
-      do {
-        let decoder = JSONDecoder()
-        let decodedData = try decoder.decode(Quote.self, from: data)
-        DispatchQueue.main.async {
-          self.quote = decodedData
-        }
-      } catch let error {
-        print(error)
-      }
+    let (data, response) = try await URLSession.shared.data(from: url, delegate: nil)
+    guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+      throw "The server responded with an error."
     }
-    .resume()
+
+//    let request = URLRequest(url: url)
+//    URLSession.shared.dataTask(with: request) { data, response, error in
+//      guard error == nil else {
+//        print("Error getting the data.")
+//        return
+//      }
+//
+//      guard let response = response as? HTTPURLResponse,
+//            (200...299).contains(response.statusCode) else {
+//        print("Invalid response.")
+//        return
+//      }
+
+//      guard let data = data else {
+//        print("No data in response.")
+//        return
+//      }
+
+      guard let decodedData = try? JSONDecoder().decode(Quote.self, from: data) else {
+        throw "The server responded with an error."
+      }
+    self.quote = decodedData
+    }
   }
-}
+

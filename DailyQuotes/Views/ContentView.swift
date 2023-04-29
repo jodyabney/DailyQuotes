@@ -66,8 +66,10 @@ struct ContentView: View {
               height: geometry.size.height * 0.5
             )
             .onTapGesture {
-              quoteViewModel.getQuotes()
-              imageViewModel.getImage()
+              Task { @MainActor in
+                try await quoteViewModel.getQuotes()
+                imageViewModel.getImage()
+              }
             }
           Spacer()
         }

@@ -1,4 +1,4 @@
-/// Copyright (c) 2022 Razeware LLC
+/// Copyright (c) 2023 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,25 +30,20 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import SwiftUI
-import Combine
+import UIKit
+import Accelerate
 
-@MainActor
-class ImageViewModel: ObservableObject {
-  @Published var image = UIImage(named: Constants.Image.logo) ?? UIImage()
+/// Easily throw generic errors with a text description.
+extension String: LocalizedError {
+  public var errorDescription: String? {
+    return self
+  }
+}
 
-  func getImage() {
-    guard let url = URL(string: Constants.URL.image) else {
-      return
-    }
-    URLSession.shared.dataTask(with: url) { data, _, _ in
-      DispatchQueue.main.async {
-        guard let data = data else {
-          return
-        }
-        self.image = UIImage(data: data) ?? UIImage(named: Constants.Image.logo) ?? UIImage()
-      }
-    }
-    .resume()
+extension Task where Success == Never, Failure == Never {
+  /// Suspends the current task for at least the given duration in seconds.
+  /// - Parameter seconds: The sleep duration in seconds.
+  static func sleep(seconds: TimeInterval) async {
+    try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
   }
 }
