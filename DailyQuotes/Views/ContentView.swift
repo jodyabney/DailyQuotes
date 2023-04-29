@@ -80,14 +80,6 @@ struct ContentView: View {
         }
       }
     }
-    .task {
-      do {
-        try await quoteViewModel.getQuotes()
-        try await imageViewModel.getImage()
-      } catch {
-        print(error.localizedDescription)
-      }
-    }
   }
 }
 
