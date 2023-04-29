@@ -33,22 +33,19 @@
 import SwiftUI
 import Combine
 
-@MainActor
 class ImageViewModel: ObservableObject {
   @Published var image = UIImage(named: Constants.Image.logo) ?? UIImage()
 
-  func getImage() {
+  func getImage() async throws {
     guard let url = URL(string: Constants.URL.image) else {
       return
     }
-    URLSession.shared.dataTask(with: url) { data, _, _ in
-      DispatchQueue.main.async {
-        guard let data = data else {
-          return
-        }
-        self.image = UIImage(data: data) ?? UIImage(named: Constants.Image.logo) ?? UIImage()
-      }
+    let (data, response) = try await URLSession.shared.data(from: url, delegate: nil)
+    guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+      throw "The server responded with an error."
     }
-    .resume()
+    Task { @MainActor in
+      self.image = UIImage(data: data) ?? UIImage(named: Constants.Image.logo) ?? UIImage()
+    }
   }
 }

@@ -32,7 +32,6 @@
 
 import Foundation
 
-@MainActor
 class QuoteViewModel: ObservableObject {
   @Published var quote = Quote.example
 
@@ -46,29 +45,13 @@ class QuoteViewModel: ObservableObject {
     guard (response as? HTTPURLResponse)?.statusCode == 200 else {
       throw "The server responded with an error."
     }
-
-//    let request = URLRequest(url: url)
-//    URLSession.shared.dataTask(with: request) { data, response, error in
-//      guard error == nil else {
-//        print("Error getting the data.")
-//        return
-//      }
-//
-//      guard let response = response as? HTTPURLResponse,
-//            (200...299).contains(response.statusCode) else {
-//        print("Invalid response.")
-//        return
-//      }
-
-//      guard let data = data else {
-//        print("No data in response.")
-//        return
-//      }
-
-      guard let decodedData = try? JSONDecoder().decode(Quote.self, from: data) else {
-        throw "The server responded with an error."
-      }
-    self.quote = decodedData
+    
+    guard let quote = try? JSONDecoder().decode(Quote.self, from: data) else {
+      throw "The server responded with an error."
+    }
+    Task { @MainActor in
+      self.quote = quote
     }
   }
+}
 

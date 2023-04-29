@@ -35,7 +35,9 @@ import Foundation
 enum Constants {
   enum URL {
     static let image = "https://picsum.photos/250/200"
-    static let quote = "https://programming-quotes-api.herokuapp.com/Quotes/random"
+    // thanks Simon Topliss for the revised URL!
+    static let quote = "https://programming-quotesapi.vercel.app/api/random"
+//    static let quote = "https://programming-quotes-api.herokuapp.com/Quotes/random"
   }
 
   enum Image {

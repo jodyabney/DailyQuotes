@@ -60,19 +60,32 @@ struct ContentView: View {
             )
             .cornerRadius(10)
             .padding(30)
+
           QuoteView(quote: quoteViewModel.quote)
             .frame(
               width: geometry.size.width * 0.9,
               height: geometry.size.height * 0.5
             )
             .onTapGesture {
-              Task { @MainActor in
-                try await quoteViewModel.getQuotes()
-                imageViewModel.getImage()
+              Task {
+                do {
+                  try await quoteViewModel.getQuotes()
+                  try await imageViewModel.getImage()
+                } catch {
+                  print(error.localizedDescription)
+                }
               }
             }
           Spacer()
         }
+      }
+    }
+    .task {
+      do {
+        try await quoteViewModel.getQuotes()
+        try await imageViewModel.getImage()
+      } catch {
+        print(error.localizedDescription)
       }
     }
   }
