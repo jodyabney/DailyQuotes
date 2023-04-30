@@ -30,6 +30,7 @@
 		18D775CE22AD944400AE281E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18D775DE22AD96B400AE281E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B10965BD29FCB83A00493DA3 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		B10965C329FF371000493DA3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EAF0292728A8586900394064 /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
 		EAF0292928A8587E00394064 /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		EAF0292B28A858A600394064 /* ImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewModel.swift; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 		18D775BF22AD944300AE281E /* DailyQuotes */ = {
 			isa = PBXGroup;
 			children = (
+				B10965C329FF371000493DA3 /* README.md */,
 				1839F4AF25190F2A00BB00F1 /* AppMain.swift */,
 				EAF0293128A94C6C00394064 /* Constants.swift */,
 				EAF0292428A8584B00394064 /* Models */,
